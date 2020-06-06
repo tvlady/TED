@@ -12,3 +12,4 @@ r_tip_in, r_m_in, r_hub_in, h_t_ratio_in, flow_coeff, loading_coeff, mn_1, mn_1r
 
 
 
+print("waow")
