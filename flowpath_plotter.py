@@ -70,7 +70,9 @@ def flowpath_plotter(plot_matrix, IGV_config, turbo_type,units):
     else:
         plt.ylabel('Radial length (m)')
         plt.xlabel('Axial length (m)')
+    plt.ylim(ymin=0)
+    plt.axis('equal')
     plt.title(turbo_type+' flowpath drawing')
-    plt.savefig(turbo_type+'_flowpath_drawing'+'.png', dpi=300)
+    plt.savefig('results/'+turbo_type+'/'+'flowpath_drawing'+'.png', dpi=300)
  
         

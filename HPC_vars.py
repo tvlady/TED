@@ -9,7 +9,8 @@ Created on Mon Jun  8 12:46:39 2020
 radius_config="TIP"     #TIP MEAN or HUB
 IGV_config="NO"        #YES or NO
 turbo_type="HPC"
-units="ENGLISH"
+free_vortex="YES"
+units="SI"
 n_stage=6;
 gamma=1.35
 R=287;

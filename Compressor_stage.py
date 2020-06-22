@@ -5,6 +5,7 @@ import math
 import sympy
 import velocity_triangle_plotter as vtp
 import free_vortex as fv
+import blade_section_drawer as bp
 
 
 def compressor_stage(gamma, R_air, config, Area_in, r_const, N_rpm, Cz, alpha1, deHaller, Tt_in, alpha3, df_r, df_s, Pt_in, m_dot, Re_r, Re_s, V_trinangles,n_stage,turbo_type, units, w_r, w_s, free_vortex_input):
@@ -44,15 +45,16 @@ def compressor_stage(gamma, R_air, config, Area_in, r_const, N_rpm, Cz, alpha1, 
     equ1 = sympy.Eq(sympy.cos(math.radians(beta1)),(deHaller*sympy.cos(x)))
     sol =  sympy.solve((equ1),(x))
     beta2 = math.degrees(min(sol))*-1
-    alpha2= math.degrees(math.atan((math.tan(math.radians(beta2))*Cz+U_bladespeed)/Cz));
+    alpha2= math.degrees(math.atan((math.tan(math.radians(beta2))+1/flow_coeff)));
 
     d_ctheta_1_2=U_bladespeed+Cz*(math.tan(math.radians(beta2))-math.tan(math.radians(alpha1)));
     loading_coeff=d_ctheta_1_2/U_bladespeed;                  
 
     degree_reaction=.5-Cz/U_bladespeed*(math.tan(math.radians(beta2))+math.tan(math.radians(alpha1)))/2;
 
-
-
+    C2=Cz/math.cos(math.radians(alpha2))
+    C3=Cz/math.cos(math.radians(alpha3))
+    dH_stator=C3/C2;
 
 
 
@@ -193,16 +195,23 @@ def compressor_stage(gamma, R_air, config, Area_in, r_const, N_rpm, Cz, alpha1, 
         camber_r_old=camber_r;
         camber_s_old=camber_s;
         
-        
+      
+    w_theta1=Cz/math.tan(math.radians(beta1));
+    w_theta2=Cz/math.tan(math.radians(beta2));   
+    stagger_rotor=beta1-indicdence_Rotor_stator-abs(camber_r)/2;  
+      
     if V_trinangles == "YES":
         vtp.velocity_triangle_plotter(alpha1, beta1, U_bladespeed, Cz, n_stage, 1, "Mean",turbo_type, units)
         vtp.velocity_triangle_plotter(alpha2, beta2, U_bladespeed, Cz, n_stage, 2, "Mean",turbo_type, units)
+        bp.bladeplotter(Cz/math.cos(math.radians(beta1)),.1, w_theta1,w_theta2,s_r, b_r, stagger_rotor, turbo_type, n_stage)
 
     if free_vortex_input == "YES":
         fv.free_vortex_calcs(r_m_in, r_hub_in,r_tip_in, flow_coeff, loading_coeff, N_rpm, alpha1, alpha2, Cz, n_stage, turbo_type, units)
  
 
-    return r_tip_in, r_m_in, r_hub_in, h_t_ratio_in, flow_coeff, loading_coeff, MN1, MN1rel, MN_2, MN_2_rel, solidity_r, solidity_s, n_st, PR_st, num_blades_r, num_blades_s, AR_r, AR_s, A_exit, pt3, T_o3,degree_reaction, r_tip_2, r_m_2, r_hub_2, r_tip_3, r_m_3, r_hub_3, bz_r, bz_s
+
+
+    return r_tip_in, r_m_in, r_hub_in, h_t_ratio_in, flow_coeff, loading_coeff, MN1, MN1rel, MN_2, MN_2_rel, solidity_r, solidity_s, n_st, PR_st, num_blades_r, num_blades_s, AR_r, AR_s, A_exit, pt3, T_o3,degree_reaction, r_tip_2, r_m_2, r_hub_2, r_tip_3, r_m_3, r_hub_3, bz_r, bz_s, b_r, b_s, dH_stator
 
 def dynamic_visc(Temp):
       return 0.000001458*Temp**(3/2)/(Temp+110.4);
