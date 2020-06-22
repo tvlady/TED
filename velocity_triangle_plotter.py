@@ -33,4 +33,4 @@ def velocity_triangle_plotter(alpha, beta, U, Cz, n_stage, station, location, tu
         plt.xlabel('Axial Velocity (m/s)')
         plt.axis([0,500,-600,600])
         plt.legend(['$C_{'+ station +'}$: '+ str(round(c))+' m/s @ $ α_{'+ station +'} $ = '+ str(round(alpha))+'°', r'$W_{'+ station +'}$: '+ str(round(w))+ r'm/s @ $ \beta_{'+ station +'} $ = '+ str(round(beta))+'°', r"$C_{z}$: "+ str(round(Cz))+ 'm/s', r"$U$: "+ str(round(U))+ 'm/s'], prop={'size': 6})
-    plt.savefig('velocity_triangles/'+turbo_type+'/'+'stage_' +n_stage+'_station_'+ station +'_'+ location +'.png', dpi=300)
+    plt.savefig('results/'+turbo_type+'/'+'stage_' +n_stage+'_station_'+ station +'_'+ location +'.png', dpi=300)

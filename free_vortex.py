@@ -8,6 +8,7 @@ Created on Fri Jun 12 19:41:12 2020
 import numpy
 import matplotlib.pyplot as plt
 import math
+import blade_section_drawer as bp
 
 def free_vortex_calcs(r_m, r_hub_rotor,r_tip_rotor, flow_coeff, loading_coeff, N_rpm, alpha1, alpha2, Cz, n_stage, turbo_type, units):
 
@@ -35,18 +36,21 @@ def free_vortex_calcs(r_m, r_hub_rotor,r_tip_rotor, flow_coeff, loading_coeff, N
         beta2_matrix.append(math.degrees(math.atan((c_theta2*r_m/(r_vector[i])-wheel_speed_matrix[i])/Cz)));
         turning.append(abs(beta1_matrix[i]-beta2_matrix[i]));
         reaction_matrix.append(.5-Cz/wheel_speed_matrix[i]*(math.tan(math.radians(beta2_matrix[i]))+math.tan(math.radians(alpha1_matrix[i])))/2);
+    
+    n_stage=str(n_stage)
 
     plt.figure()
     plt.plot(flow_matrix,r_vector*39.3701,loading_matrix,r_vector*39.3701, reaction_matrix, r_vector*39.3701 )
     plt.xlabel('Parameter value')
     plt.ylabel('blade radius (in)')
     plt.legend(['flow coefficent', 'loading coefficent', 'degree reaction']);
+    plt.savefig('results/'+turbo_type+'/'+'stage_' +n_stage +'_aero_coefs' +'.png', dpi=300)
     
     plt.figure()
     plt.plot(beta1_matrix,r_vector*39.3701 ,beta2_matrix,r_vector*39.3701, turning,r_vector*39.3701)
     plt.ylabel('blade radius (in)')
     plt.xlabel('Angle (deg)')
     plt.legend(['beta1', 'beta2', 'turning']);
-   
+    plt.savefig('results/'+turbo_type+'/'+'stage_' +n_stage +'_rotor_angles'  +'.png', dpi=300)
     
     
